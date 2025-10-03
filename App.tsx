@@ -1,28 +1,34 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import MapLibreGL from '@maplibre/maplibre-react-native';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+export default function App() {
+  // Log keys once on mount
+  useEffect(() => {
+    console.log('MapLibreGL keys:', MapLibreGL && Object.keys(MapLibreGL));
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NewAppScreen templateFileName="App.tsx" />
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container} edges={['top', 'right', 'bottom', 'left']}>
+        <MapLibreGL.MapView style={styles.map}>
+          <MapLibreGL.Camera zoomLevel={12} centerCoordinate={[-74.006, 40.7128]} />
+          <MapLibreGL.RasterSource
+            id="osm"
+            tileSize={256}
+            urlTemplates={['https://tile.openstreetmap.org/{z}/{x}/{y}.png']}
+          >
+            <MapLibreGL.RasterLayer id="osmLayer" sourceID="osm" />
+          </MapLibreGL.RasterSource>
+        </MapLibreGL.MapView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: { flex: 1 },
+  map: { flex: 1 },
 });
 
-export default App;
