@@ -1,4 +1,4 @@
-package com.mymapapp
+package com.maplibredemo
 
 import android.app.Application
 import com.facebook.react.PackageList
